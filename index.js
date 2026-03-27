@@ -1,3 +1,11 @@
+const http = require('http');
+
+http.createServer((req, res) => {
+    res.write("Mirac_Bot 7/24 Aktif!"); 
+    res.end();
+}).listen(8080); 
+
+console.log("Render Uyku Engelleyici Sistemi Aktif!");
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 8080;
