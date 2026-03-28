@@ -1,13 +1,4 @@
-const http = require('http');
 
-// Render'ın uyumasını engelleyen kısım (Outputu çok küçük tuttuk)
-http.createServer((req, res) => {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.write("OK"); // Sadece "OK" yazdırıyoruz ki Cron-job hata vermesin
-    res.end();
-}).listen(process.env.PORT || 8080);
-
-console.log("Render Uyku Engelleyici Sistemi Aktif!");
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 8080;
