@@ -43,15 +43,6 @@ function createBot() {
 // Botu ilk kez çalıştır
 createBot();
 
-// --- 5 DAKİKADA BİR TAZELEME DÖNGÜSÜ ---
-setInterval(() => {
-    console.log('5 dakika doldu, bağlantı tazeleniyor...');
-    if (bot) {
-        bot.quit(); // Çıkış yapınca yukarıdaki 'end' olayı tetiklenir ve 10 sn sonra girer
-    } else {
-        createBot();
-    }
-}, 300000); // 300,000ms = 5 dakika
 
 // Render Keep-Alive
 const express = require('express');
