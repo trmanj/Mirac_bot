@@ -2,7 +2,7 @@ const mineflayer = require('mineflayer');
 
 function createBot() {
     const bot = mineflayer.createBot({
-        host: 'Trmanj.aternos.me',
+        host: 'trmanj.aternos.me',
         port: 59562,
         username: 'Mirac_Bot',
         version: '1.20.1' // Sunucu sürümün farklıysa burayı mutlaka düzelt!
