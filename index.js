@@ -1,9 +1,11 @@
 const http = require('http');
 
+// Render'ın uyumasını engelleyen kısım (Outputu çok küçük tuttuk)
 http.createServer((req, res) => {
-    res.write("Mirac_Bot 7/24 Aktif!"); 
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.write("OK"); // Sadece "OK" yazdırıyoruz ki Cron-job hata vermesin
     res.end();
-}).listen(8080); 
+}).listen(process.env.PORT || 8080);
 
 console.log("Render Uyku Engelleyici Sistemi Aktif!");
 const express = require('express');
