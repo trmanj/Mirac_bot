@@ -2,7 +2,7 @@ const mineflayer = require('mineflayer');
 
 const botArgs = {
     host: 'trmanj.aternos.me',
-    port: 39598, // Buranın Java portu olduğundan emin ol!
+    port: 59562, // Buranın Java portu olduğundan emin ol!
     username: 'Mirac_Bot',
     version: '1.21.1',
     auth: 'offline'
