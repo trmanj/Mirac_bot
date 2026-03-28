@@ -1,40 +1,52 @@
-
 const express = require('express');
-const app = express();
-const port = process.env.PORT || 8080;
-
-app.get("/", (req, res) => {
-  res.send("Bot 7/24 Aktif!");
-});
-
-app.listen(port, () => {
-  console.log(`Sunucu ${port} portunda uyanık!`);
-});
-
 const mineflayer = require('mineflayer');
 
+const app = express();
+const PORT = process.env.PORT || 10000;
+
+// Render'ın botu açık tutması için gereken Web Sunucusu
+app.get('/', (req, res) => {
+  res.send('Mirac_Bot 7/24 Aktif ve Zıplıyor!');
+});
+
+app.listen(PORT, () => {
+  console.log(`Sunucu ${PORT} portunda başarıyla başlatıldı.`);
+});
+
+// --- MINEFLAYER BOT AYARLARI ---
+
+const botArgs = {
+  host: 'trmanj.aternos.me',
+  port: 59562,
+  username: 'Mirac_Bot',
+  version: '1.21.4'
+};
+
+let bot;
+
 function createBot() {
-  const bot = mineflayer.createBot({
-    host: 'trmanj.aternos.me',
-    port: 59562,
-    username: 'Mirac_Bot',
-    version: '1.21.4'
-  });
+  bot = mineflayer.createBot(botArgs);
 
   bot.on('spawn', () => {
-    console.log(">> Bot sunucuya başarıyla giriş yaptı!");
+    console.log('>> Mirac_Bot sunucuya giriş yaptı!');
+    // Botun Aternos'tan atılmaması için sürekli zıplama (Anti-AFK)
     setInterval(() => {
       bot.setControlState('jump', true);
-      setTimeout(() => bot.setControlState('jump', false), 500);
+      setTimeout(() => {
+        bot.setControlState('jump', false);
+      }, 500);
     }, 5000);
   });
 
-  bot.on('error', (err) => console.log("Hata: ", err.message));
   bot.on('end', () => {
-    console.log("Bağlantı kesildi. 10 saniye sonra tekrar deniyorum...");
-    setTimeout(() => createBot(), 10000);
+    console.log('>> Bot sunucudan çıktı, 10 saniye sonra tekrar bağlanacak...');
+    setTimeout(createBot, 10000);
+  });
+
+  bot.on('error', (err) => {
+    console.log(`>> Hata oluştu: ${err}`);
   });
 }
 
 createBot();
-    
+
