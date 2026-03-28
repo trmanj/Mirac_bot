@@ -1,51 +1,41 @@
 const mineflayer = require('mineflayer');
 
-const botArgs = {
-    host: 'trmanj.aternos.me',
-    port: 59562, // Buranın Java portu olduğundan emin ol!
-    username: 'Mirac_Bot',
-    version: '1.21.1',
-    auth: 'offline'
-};
-
-let bot;
-
 function createBot() {
-    if (bot) {
-        bot.removeAllListeners(); // Eski dinleyicileri temizle
-    }
-
-    bot = mineflayer.createBot(botArgs);
-
-    bot.on('login', () => {
-        console.log('Bot başarıyla bağlandı!');
+    const bot = mineflayer.createBot({
+        host: 'Trmanj.aternos.me',
+        port: 59562,
+        username: 'Mirac_Bot',
+        version: '1.20.1' // Sunucu sürümün farklıysa burayı mutlaka düzelt!
     });
 
     bot.on('spawn', () => {
-        console.log('Bot oyunda ve aktif.');
+        console.log('>> Mirac_Bot sunucuya sızdı! Nöbet başladı.');
     });
 
-    // --- KRİTİK KISIM: ATILIRSA 10 SN SONRA GERİ GEL ---
+    // --- KRİTİK: DÜŞERSE 5 SANİYEDE GERİ DÖN ---
     bot.on('end', () => {
-        console.log('Bot sunucudan düştü veya atıldı. 10 saniye sonra tekrar denenecek...');
-        setTimeout(createBot, 10000); // 10000ms = 10 saniye
+        console.log('!! Bot koptu, 5 saniye içinde geri fırlıyor...');
+        setTimeout(createBot, 5000); 
     });
 
     bot.on('error', (err) => {
-        console.log('Bir hata oluştu: ' + err);
-        // Hata durumunda da bağlantı kopmuş olabilir, end olayı tetiklenmezse diye:
-        if (err.code === 'ECONNREFUSED') {
-            setTimeout(createBot, 10000);
-        }
+        console.log('>> Hata oluştu: ' + err.message);
+        setTimeout(createBot, 10000); // Hata varsa 10 saniye bekle
     });
+
+    // --- PLANLI TAZELEME: 17 SAATTE BİR ---
+    setInterval(() => {
+        console.log('>> 17 saat doldu, bot tazelenmek için çıkış yapıyor...');
+        bot.quit();
+    }, 61200000); // 17 Saat = 61.200.000 ms
 }
 
-// Botu ilk kez çalıştır
+// Botu başlat
 createBot();
 
-
-// Render Keep-Alive
-const express = require('express');
-const app = express();
-app.get('/', (req, res) => res.send('Mirac_Bot 7/24 Koruma Altında!'));
-app.listen(3000);
+// Render'ı ve Cron-job'u uyanık tutan sunucu (Port 3000)
+const http = require('http');
+http.createServer((req, res) => {
+    res.write('Mirac_Bot 7/24 Aktif!');
+    res.end();
+}).listen(3000);
