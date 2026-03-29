@@ -1,25 +1,15 @@
-const express = require('express');
 const mineflayer = require('mineflayer');
-const app = express();
-
-app.get('/', (req, res) => res.send('Sistem Yeniden Dogdu!'));
-app.listen(3000, '0.0.0.0');
-
 const bot = mineflayer.createBot({
-  host: 'trmanj.aternos.me',
-  port: 59562,
-  username: 'Mirac_Bot',
-  version: false,
-  auth: 'offline'
+    host: 'ADRESIN.aternos.me', // Kendi IP'ni yaz!
+    username: 'Mirac_Bot',
+    version: "1.20.1"
 });
 
 bot.on('spawn', () => {
-  console.log('✅ Bot basariyla girdi!');
+    console.log("✅ Mirac_Bot raylarda, manzarayı izliyor!");
+    setInterval(() => {
+        bot.look(Math.random() * 6.28, (Math.random() - 0.5) * 3.14);
+    }, 20000); // 20 saniyede bir etrafa bak
 });
 
-bot.on('error', (err) => console.log('Hata: ' + err.message));
-bot.on('end', () => process.exit());
-bot.on('end', () => {
-    console.log('Bağlantı koptu, 15 saniye sonra diriliyorum...');
-    setTimeout(() => { process.exit(); }, 15000); 
-});
+bot.on('end', () => setTimeout(() => process.exit(), 5000)); // Kapansa da Render otomatik restart atar
