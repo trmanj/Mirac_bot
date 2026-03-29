@@ -1,35 +1,25 @@
+const express = require('express');
 const mineflayer = require('mineflayer');
-const http = require('http');
+const app = express();
 
-http.createServer((req, res) => {
-    res.write('Mirac Sistemi - Cift Bot Savasci!');
-    res.end();
-}).listen(3000);
+app.get('/', (req, res) => res.send('Sistem Yeniden Dogdu!'));
+app.listen(3000, '0.0.0.0');
 
-// BOT 1: Klasik Mirac_Bot
-function startBot1() {
-    const bot1 = mineflayer.createBot({
-        host: 'Trmanj.aternos.me',
-        port: 59562,
-        username: 'Mirac_Bot',
-        version: false
-    });
-    bot1.on('spawn', () => console.log(">> Mirac_Bot ICERIDE!"));
-    bot1.on('end', () => setTimeout(startBot1, 15000));
-}
+const bot = mineflayer.createBot({
+  host: 'trmanj.aternos.me',
+  port: 59562,
+  username: 'Mirac_Bot',
+  version: false,
+  auth: 'offline'
+});
 
-// BOT 2: Mirac_Olumsuz (İsmini karışıklık olmasın diye koda sabitledik)
-function startBot2() {
-    const bot2 = mineflayer.createBot({
-        host: 'Trmanj.aternos.me',
-        port: 59562,
-        username: 'Mirac_Olumsuz', 
-        version: false
-    });
-    bot2.on('spawn', () => console.log(">> Mirac_Olumsuz ICERIDE!"));
-    bot2.on('end', () => setTimeout(startBot2, 15000));
-}
+bot.on('spawn', () => {
+  console.log('✅ Bot basariyla girdi!');
+});
 
-// Operasyonu Başlat
-startBot1();
-setTimeout(startBot2, 45000); // 45 saniye sonra ikinciyi sok ki "another location" hatası vermesin
+bot.on('error', (err) => console.log('Hata: ' + err.message));
+bot.on('end', () => process.exit());
+bot.on('end', () => {
+    console.log('Bağlantı koptu, 15 saniye sonra diriliyorum...');
+    setTimeout(() => { process.exit(); }, 15000); 
+});
